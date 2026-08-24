@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Close-Grip Push-Ups demo">
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#7DD3FC"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="200" height="150" rx="6" fill="#12161c"/>
+  <g stroke="#5B6472" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.65" stroke-dasharray="4,3">
+<line x1="28.0" y1="46.4" x2="100.2" y2="52.7"/>
+<line x1="100.2" y1="52.7" x2="138.2" y2="49.4"/>
+<line x1="138.2" y1="49.4" x2="172.0" y2="55.4"/>
+<line x1="28.0" y1="46.4" x2="85.0" y2="51.4"/>
+<line x1="85.0" y1="51.4" x2="138.2" y2="56.0"/>
+</g>
+<circle cx="124.9" cy="54.9" r="9" fill="#12161c" stroke="#5B6472" stroke-width="3.5" opacity="0.65"/>
+<g stroke="#FFB020" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.95">
+<line x1="28.0" y1="46.4" x2="100.2" y2="52.7"/>
+<line x1="100.2" y1="52.7" x2="138.3" y2="51.4"/>
+<line x1="138.3" y1="51.4" x2="141.3" y2="85.6"/>
+<line x1="28.0" y1="46.4" x2="85.0" y2="51.4"/>
+<line x1="85.0" y1="51.4" x2="138.2" y2="56.0"/>
+</g>
+<circle cx="124.9" cy="54.9" r="9" fill="#12161c" stroke="#FFB020" stroke-width="3.5" opacity="0.95"/>
+  <path d="M 172.0 55.4 Q 156.65 60.5 141.3 85.6" stroke="#7DD3FC" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <text x="100" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#E7ECF3">Close-Grip Push-Ups</text>
+</svg>

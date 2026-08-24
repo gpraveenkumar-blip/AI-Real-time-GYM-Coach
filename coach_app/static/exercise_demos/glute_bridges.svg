@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Glute Bridges demo">
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#7DD3FC"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="200" height="150" rx="6" fill="#12161c"/>
+  <g stroke="#5B6472" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.65" stroke-dasharray="4,3">
+<line x1="46.6" y1="64.1" x2="99.6" y2="73.4"/>
+<line x1="99.6" y1="73.4" x2="127.9" y2="73.4"/>
+<line x1="127.9" y1="73.4" x2="153.4" y2="73.4"/>
+<line x1="46.6" y1="64.1" x2="61.1" y2="104.0"/>
+<line x1="61.1" y1="104.0" x2="98.4" y2="90.4"/>
+</g>
+<circle cx="117.7" cy="76.6" r="9" fill="#12161c" stroke="#5B6472" stroke-width="3.5" opacity="0.65"/>
+<g stroke="#FFB020" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.95">
+<line x1="46.6" y1="64.1" x2="93.2" y2="37.2"/>
+<line x1="93.2" y1="37.2" x2="121.5" y2="37.2"/>
+<line x1="121.5" y1="37.2" x2="147.0" y2="37.2"/>
+<line x1="46.6" y1="64.1" x2="79.1" y2="91.4"/>
+<line x1="79.1" y1="91.4" x2="116.4" y2="77.8"/>
+</g>
+<circle cx="109.1" cy="28.0" r="9" fill="#12161c" stroke="#FFB020" stroke-width="3.5" opacity="0.95"/>
+  <path d="M 153.4 73.4 Q 150.2 45.300000000000004 147.0 37.2" stroke="#7DD3FC" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <text x="100" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#E7ECF3">Glute Bridges</text>
+</svg>

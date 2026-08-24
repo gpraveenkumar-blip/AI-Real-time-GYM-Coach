@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wide Push-Ups demo">
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#7DD3FC"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="200" height="150" rx="6" fill="#12161c"/>
+  <g stroke="#5B6472" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.65" stroke-dasharray="4,3">
+<line x1="28.0" y1="57.5" x2="101.8" y2="64.0"/>
+<line x1="101.8" y1="64.0" x2="137.1" y2="47.5"/>
+<line x1="137.1" y1="47.5" x2="172.0" y2="50.5"/>
+<line x1="28.0" y1="57.5" x2="86.2" y2="62.6"/>
+<line x1="86.2" y1="62.6" x2="140.6" y2="67.4"/>
+</g>
+<circle cx="127.0" cy="66.2" r="9" fill="#12161c" stroke="#5B6472" stroke-width="3.5" opacity="0.65"/>
+<g stroke="#FFB020" fill="none" stroke-width="3.5" stroke-linecap="round" opacity="0.95">
+<line x1="28.0" y1="57.5" x2="101.8" y2="64.0"/>
+<line x1="101.8" y1="64.0" x2="138.4" y2="50.6"/>
+<line x1="138.4" y1="50.6" x2="147.4" y2="84.5"/>
+<line x1="28.0" y1="57.5" x2="86.2" y2="62.6"/>
+<line x1="86.2" y1="62.6" x2="140.6" y2="67.4"/>
+</g>
+<circle cx="127.0" cy="66.2" r="9" fill="#12161c" stroke="#FFB020" stroke-width="3.5" opacity="0.95"/>
+  <path d="M 172.0 50.5 Q 159.7 57.5 147.4 84.5" stroke="#7DD3FC" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <text x="100" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#E7ECF3">Wide Push-Ups</text>
+</svg>

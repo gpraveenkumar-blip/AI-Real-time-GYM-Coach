@@ -1,0 +1,93 @@
+<svg width="1200" height="520" viewBox="0 0 1200 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="bg" x1="80" y1="40" x2="1120" y2="480" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#07111F"/>
+    <stop offset="0.55" stop-color="#0C2030"/>
+    <stop offset="1" stop-color="#061016"/>
+  </linearGradient>
+  <linearGradient id="cyan" x1="180" y1="100" x2="1010" y2="390" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#67E8F9"/>
+    <stop offset="1" stop-color="#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="lime" x1="520" y1="90" x2="850" y2="430" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#D9F99D"/>
+    <stop offset="1" stop-color="#84CC16"/>
+  </linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="22" stdDeviation="20" flood-color="#000000" flood-opacity=".42"/>
+  </filter>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="9" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<rect width="1200" height="520" rx="34" fill="url(#bg)"/>
+<path d="M0 420L360 90L1200 260V520H0V420Z" fill="#0B1B28" opacity=".55"/>
+<path d="M0 462L430 120L1200 300" stroke="#1F3A4B" stroke-width="2" opacity=".8"/>
+<path d="M70 480L475 164L1140 342" stroke="#163241" stroke-width="1.5"/>
+<path d="M160 520L520 205L1040 365" stroke="#163241" stroke-width="1.5"/>
+
+<!-- Isometric platform -->
+<g filter="url(#shadow)">
+  <path d="M420 365L735 190L1015 290L699 475L420 365Z" fill="#0A1721" stroke="#315162" stroke-width="2"/>
+  <path d="M420 365L699 475V438L420 328V365Z" fill="#071018"/>
+  <path d="M699 475L1015 290V326L699 438V475Z" fill="#0B202B"/>
+</g>
+
+<!-- Webcam / vision panel -->
+<g filter="url(#shadow)">
+  <path d="M520 282L730 164L910 228L698 349L520 282Z" fill="#102A38" stroke="#4B7284" stroke-width="2"/>
+  <path d="M520 282L698 349V390L520 320V282Z" fill="#0B1D27"/>
+  <path d="M698 349L910 228V270L698 390V349Z" fill="#0A202A"/>
+  <path d="M558 272L728 177L867 226L696 323L558 272Z" fill="#06131B"/>
+  <path d="M585 262L730 182L840 221L695 303L585 262Z" fill="#0D2631"/>
+</g>
+
+<!-- Pose skeleton -->
+<g stroke="url(#cyan)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+  <circle cx="716" cy="202" r="18" fill="#67E8F9" stroke="none"/>
+  <path d="M714 221L693 255L650 273"/>
+  <path d="M694 255L744 267L790 246"/>
+  <path d="M650 273L615 315L648 345"/>
+  <path d="M790 246L824 286L804 323"/>
+  <path d="M693 255L674 302L690 337"/>
+  <path d="M744 267L730 316L752 355"/>
+</g>
+<g fill="#D9F99D" filter="url(#glow)">
+  <circle cx="650" cy="273" r="7"/><circle cx="790" cy="246" r="7"/>
+  <circle cx="615" cy="315" r="7"/><circle cx="824" cy="286" r="7"/>
+  <circle cx="690" cy="337" r="7"/><circle cx="752" cy="355" r="7"/>
+</g>
+
+<!-- Floating metric cards -->
+<g filter="url(#shadow)">
+  <path d="M118 126L318 72L432 111L231 167L118 126Z" fill="#0D2530" stroke="#315766"/>
+  <path d="M118 126L231 167V218L118 177V126Z" fill="#08161E"/>
+  <path d="M231 167L432 111V162L231 218V167Z" fill="#0A1D26"/>
+  <text x="156" y="118" fill="#9FEAF5" font-family="Arial, sans-serif" font-size="18" font-weight="700">FORM SCORE</text>
+  <text x="155" y="151" fill="white" font-family="Arial, sans-serif" font-size="34" font-weight="800">94%</text>
+</g>
+
+<g filter="url(#shadow)">
+  <path d="M815 104L1010 52L1116 89L920 145L815 104Z" fill="#122A1C" stroke="#456B38"/>
+  <path d="M815 104L920 145V198L815 158V104Z" fill="#0A1810"/>
+  <path d="M920 145L1116 89V142L920 198V145Z" fill="#102719"/>
+  <text x="849" y="96" fill="#CBEF9D" font-family="Arial, sans-serif" font-size="17" font-weight="700">REPETITIONS</text>
+  <text x="849" y="130" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="800">12 / 15</text>
+</g>
+
+<!-- AI chip -->
+<g filter="url(#shadow)">
+  <rect x="884" y="365" width="214" height="84" rx="18" fill="#0D202A" stroke="#2D5666" stroke-width="2"/>
+  <circle cx="917" cy="407" r="17" fill="url(#lime)"/>
+  <path d="M910 407H924M917 400V414" stroke="#102010" stroke-width="3" stroke-linecap="round"/>
+  <text x="947" y="399" fill="#C9F5FF" font-family="Arial, sans-serif" font-size="14" font-weight="700">AI COACH</text>
+  <text x="947" y="422" fill="white" font-family="Arial, sans-serif" font-size="17" font-weight="700">Keep your back neutral</text>
+</g>
+
+<!-- Title -->
+<text x="74" y="310" fill="white" font-family="Arial, sans-serif" font-size="46" font-weight="900">AI REAL-TIME GYM COACH</text>
+<text x="78" y="345" fill="#9BC3D0" font-family="Arial, sans-serif" font-size="19">Computer vision • pose estimation • exercise intelligence • voice coaching</text>
+<rect x="76" y="370" width="260" height="5" rx="2.5" fill="url(#cyan)"/>
+</svg>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body{margin:0;background:transparent;font-family:system-ui,sans-serif}
+.wrap{border:1px solid #263247;border-radius:12px;padding:12px;background:#0d1320;color:#fff}
+.row{display:flex;gap:8px;align-items:center}
+button{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}
+#listen{background:#22c55e;color:#06120a}
+#stop{background:#374151;color:#fff}
+#status{font-size:12px;color:#9ca3af;margin-top:8px}
+#heard{font-size:13px;color:#93c5fd;margin-top:7px;min-height:18px}
+</style>
+<script src="https://unpkg.com/streamlit-component-lib@2.0.0/dist/index.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="row">
+    <button id="listen">🎤 START LISTENING</button>
+    <button id="stop">STOP</button>
+  </div>
+  <div id="status">Microphone is off. Click START LISTENING once.</div>
+  <div id="heard"></div>
+</div>
+<script>
+(() => {
+  const api = window.Streamlit;
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const listen = document.getElementById("listen");
+  const stop = document.getElementById("stop");
+  const status = document.getElementById("status");
+  const heard = document.getElementById("heard");
+  let rec = null, active = false, restarting = false;
+
+  function setFrameHeight(){ if(api) api.setFrameHeight(100); }
+  setFrameHeight();
+  // This file is intended to run inside Streamlit's component iframe.
+  // If opened directly at localhost:5500, Streamlit is absent and no LLM
+  // response can be delivered; show an explicit message instead of pretending
+  // that the standalone page is connected to the coach.
+  if(!api || typeof api.setComponentReady !== "function"){
+    status.textContent = "Open the main AI Real-time GYM Coach app to use voice conversation.";
+    listen.disabled = true;
+    stop.disabled = true;
+    return;
+  }
+
+  api.setComponentReady();
+  if(!Recognition){
+    status.textContent = "Voice input is not supported by this browser. Use Chrome or Edge.";
+    listen.disabled = true;
+    stop.disabled = true;
+    return;
+  }
+
+  rec = new Recognition();
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+
+  let selectedLanguage = "English";
+  function language(){
+    return selectedLanguage === "Telugu" ? "te-IN" : selectedLanguage === "Hindi" ? "hi-IN" : "en-US";
+  }
+  let autoStart = false;
+  function applyArgs(args){
+    if(args && args.language) selectedLanguage = args.language;
+    if(args && typeof args.auto_start !== "undefined") autoStart = !!args.auto_start;
+    if(rec && !active) rec.lang = language();
+    if(autoStart && !active) setTimeout(start, 120);
+  }
+
+  function start(){
+    if(active) return;
+    active=true;
+    restarting=false;
+    rec.lang=language();
+    try{ rec.start(); }catch(e){}
+    status.textContent="🟢 Listening… speak naturally to your AI coach.";
+    listen.textContent="🎤 LISTENING";
+  }
+
+  function stopListening(){
+    active=false;
+    restarting=false;
+    try{rec.stop();}catch(e){}
+    status.textContent="Microphone stopped.";
+    listen.textContent="🎤 START LISTENING";
+  }
+
+  rec.onstart=()=>{status.textContent="🟢 Listening… speak naturally to your AI coach.";};
+  rec.onresult=(event)=>{
+    let text="";
+    for(let i=event.resultIndex;i<event.results.length;i++){
+      if(event.results[i].isFinal) text += event.results[i][0].transcript;
+    }
+    text=text.trim();
+    if(!text) return;
+    heard.textContent="You: "+text;
+    if(api) api.setComponentValue({text, ts:Date.now()});
+  };
+  rec.onerror=(event)=>{
+    if(event.error==="not-allowed" || event.error==="service-not-allowed"){
+      active=false;
+      status.textContent="⚠️ Microphone permission was blocked. Allow microphone access and click START LISTENING.";
+      return;
+    }
+    if(active) status.textContent="Listening…";
+  };
+  rec.onend=()=>{
+    if(active && !restarting){
+      restarting=true;
+      setTimeout(()=>{restarting=false; if(active){try{rec.start();}catch(e){}}},150);
+    }
+  };
+
+  listen.onclick=start;
+  stop.onclick=stopListening;
+  if(api) {
+    window.addEventListener("message", (event) => {
+      const d = event.data;
+      if(d && d.type === "streamlit:render") {
+        try { applyArgs(d.args || {}); } catch(e) {}
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

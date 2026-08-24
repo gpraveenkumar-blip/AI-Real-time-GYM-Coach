@@ -1,0 +1,576 @@
+/* =========================================================
+   AI GYM COACH — DESIGN TOKENS
+   Industrial gym-HUD aesthetic: deep charcoal shell, amber
+   "warning-tape" accent for readouts (echoes iron-plate /
+   hazard-tape signage), cyan pulse for live status (echoes
+   a heart-rate monitor). Tabular-num monospace digits give
+   the metrics a scoreboard feel — the signature element.
+========================================================= */
+
+:root {
+  --bg: #06070B;
+  --surface: #10131C;
+  --surface-alt: #171C2B;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --text-hi: #F3F4F7;
+  --text-mid: #8D93A6;
+  --text-dim: #5B6175;
+  --accent: #FFB020;
+  --accent-glow: rgba(255, 176, 32, 0.35);
+  --live: #42E8E0;
+  --success: #34D399;
+  --danger: #F87171;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+/* =========================================================
+   GLOBAL THEME
+========================================================= */
+
+.stApp {
+  background-color: var(--bg);
+  color: var(--text-hi);
+}
+
+[data-testid="stSidebar"] {
+  background-color: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+/* =========================================================
+   TYPOGRAPHY (SCOPED)
+========================================================= */
+
+.block-container,
+.block-container *:not([data-testid="stIconMaterial"]):not(.material-symbols-outlined):not(.material-symbols-rounded):not([data-testid*="Icon"]) {
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+/* Streamlit renders expander chevrons, alert icons, etc. as ligature text
+   in a Material Symbols icon font (e.g. the text "keyboard_arrow_right"
+   is displayed as an arrow glyph). The blanket font override above was
+   clobbering that font, so the ligature name showed up as literal
+   overlapping text instead of an icon. Keep icon elements on their
+   original font so they render as glyphs again. The [data-testid*="Icon"]
+   catch-all covers icon components beyond just the expander chevron
+   (buttons with icons, alert icons, etc.) across Streamlit versions. */
+[data-testid="stIconMaterial"],
+[data-testid*="Icon"],
+.material-symbols-outlined,
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', sans-serif !important;
+}
+
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.block-container {
+  padding: 42px 3rem 80px !important;
+  max-width: 780px !important;
+}
+
+/* =========================================================
+   SIGNATURE — HUD EYEBROW LABELS
+   Small caps, wide letter-spacing, muted — used throughout
+   the sidebar in place of default subheaders. Reads like
+   equipment/signage labeling.
+========================================================= */
+
+.hud-eyebrow {
+  font-family: var(--mono) !important;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 6px 0;
+  display: block;
+}
+
+/* =========================================================
+   SIGNATURE — TOP STATUS BAR
+========================================================= */
+
+.hud-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hud-topbar .hud-title {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  letter-spacing: -0.01em;
+}
+
+.hud-topbar .hud-sub {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  margin-top: 2px;
+}
+
+.hud-status-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-mid);
+  white-space: nowrap;
+}
+
+.hud-status-pill.live {
+  color: var(--live);
+  border-color: rgba(66, 232, 224, 0.35);
+}
+
+.hud-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  display: inline-block;
+}
+
+.hud-status-pill.live .hud-dot {
+  background: var(--live);
+  box-shadow: 0 0 8px 2px rgba(66, 232, 224, 0.55);
+  animation: hud-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes hud-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* =========================================================
+   SIGNATURE — SCOREBOARD STRIP (main content, hero moment)
+========================================================= */
+
+.hud-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.hud-scoreboard .hud-cell {
+  background: var(--surface);
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.hud-scoreboard .hud-value {
+  font-family: var(--mono);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 18px var(--accent-glow);
+  line-height: 1.1;
+}
+
+.hud-scoreboard .hud-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* =========================================================
+   EMPTY STATE — "READY LINE"
+========================================================= */
+
+.hud-ready {
+  border: 1px solid var(--border-strong);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+  padding: 56px 32px;
+  text-align: center;
+  margin: 24px 0 32px;
+  position: relative;
+}
+
+.hud-ready::before {
+  content: "READY";
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hud-ready h2 {
+  color: var(--text-hi);
+  font-size: 1.3rem;
+  margin: 12px 0 10px;
+}
+
+.hud-ready p {
+  color: var(--text-mid);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button,
+.stButton button,
+.stDownloadButton button,
+.MuiBox-root button {
+  background-color: var(--surface-alt) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 0 !important;
+  font-family: 'AdobeClean', sans-serif !important;
+  letter-spacing: 0.03em !important;
+  transition: border-color 0.15s ease, color 0.15s ease !important;
+}
+
+.stButton button:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Primary CTA buttons (Start Workout / Log In) get the accent treatment */
+[data-testid="stFormSubmitButton"] button,
+.stButton button[kind="primary"] {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #14100A !important;
+  font-weight: 600 !important;
+}
+
+[data-testid="stFormSubmitButton"] button:hover,
+.stButton button[kind="primary"]:hover {
+  background-color: #FFC24D !important;
+  border-color: #FFC24D !important;
+  color: #14100A !important;
+}
+
+/* =========================================================
+   INPUTS & TEXT ELEMENTS
+========================================================= */
+
+input,
+textarea,
+p,
+li,
+code,
+[data-testid="stSelectbox"] > div > div,
+[data-baseweb="select"] > div,
+[data-baseweb="popover"] ul,
+[data-baseweb="menu"] {
+  border-radius: 0 !important;
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+input:focus, textarea:focus, [data-baseweb="select"] > div:focus-within {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent) !important;
+}
+
+/* =========================================================
+   METRICS (sidebar progress / exercise readouts)
+========================================================= */
+
+[data-testid="stMetric"] {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 0.85rem 1.1rem;
+  border-radius: 0;
+}
+
+[data-testid="stMetric"] div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+[data-testid="stMetricValue"] {
+  font-family: var(--mono) !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  color: var(--text-hi) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-testid="stMetricLabel"] {
+  font-family: var(--mono) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+[data-testid="stMetric"] div label p {
+  font-size: 15px !important;
+}
+
+/* =========================================================
+   CONTAINERS / CARDS
+========================================================= */
+
+.stContainer,
+.stExpander,
+.stTabs,
+.stColumns,
+.stPopover,
+.stAlertContainer,
+.stStatusContainer,
+.stMetric,
+.stTable,
+.stDataFrame,
+.stForm,
+.stSelectbox,
+[data-baseweb="select"] > div,
+[data-testid="stForm"],
+[data-testid="stMetric"],
+[data-testid="stNumberInputContainer"],
+[data-testid="stDataFrameColumnMenu"],
+[data-testid="stHeadingWithActionElements"],
+[data-testid="stCaptionContainer"] p,
+[data-testid="stAlertContentInfo"] p,
+[data-testid="stSidebarNavLink"],
+[data-testid="stMarkdownContainer"] h3,
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+div[role="menu"],
+div[role="menuitem"] {
+  border-radius: 0 !important;
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+/* =========================================================
+   DATAFRAME / TABLE FIX
+========================================================= */
+
+.stDataFrame,
+.stDataFrame div,
+.stDataFrameGlideDataEditor {
+  border-radius: 0 !important;
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+.stTable table {
+  border: 1px solid var(--border) !important;
+}
+
+.stTable th {
+  font-family: var(--mono) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim) !important;
+  background-color: var(--surface-alt) !important;
+  border-bottom: 1px solid var(--border-strong) !important;
+}
+
+.stTable td {
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* =========================================================
+   INTERACTIVE ELEMENTS
+========================================================= */
+
+.stTextInput,
+.stTextArea,
+.stNumberInput,
+.stSlider,
+.stMultiselect,
+.stRadio,
+.stCheckbox,
+.stToggle,
+.stFileUploader,
+.stColorPicker,
+.stDateInput,
+.stTimeInput,
+.stCameraInput,
+[data-testid="stTextInput"] > div,
+[data-testid="stButton"] button,
+[data-testid="stBaseButton-secondaryFormSubmit"],
+[data-testid="stStatusWidget"] {
+  border-radius: 0 !important;
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+/* =========================================================
+   ALERTS (coach feedback / info / success)
+========================================================= */
+
+[data-testid="stAlertContainer"] {
+  border-radius: 0 !important;
+  border-left: 2px solid var(--live) !important;
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+/* =========================================================
+   MARKDOWN
+========================================================= */
+
+[data-testid="stMarkdownContainer"] strong {
+  font-family: 'AdobeClean', sans-serif !important;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.stForm {
+  margin-top: 1.5rem !important;
+  padding: 1.5rem 1.25rem !important;
+  background-color: var(--surface-alt) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-hi);
+}
+
+/* =========================================================
+   DIVIDERS
+========================================================= */
+
+hr, [data-testid="stDivider"] {
+  border-color: var(--border) !important;
+}
+
+/* =========================================================
+   EXPERIENCE LEVEL BADGES
+========================================================= */
+
+.level-badge {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-mid);
+}
+
+.level-badge.beginner { color: var(--success); border-color: rgba(52, 211, 153, 0.35); }
+.level-badge.intermediate { color: var(--accent); border-color: rgba(255, 176, 32, 0.35); }
+.level-badge.advanced { color: var(--danger); border-color: rgba(248, 113, 113, 0.35); }
+
+/* =========================================================
+   VOLUME BANNER — recommended sets x reps readout
+========================================================= */
+
+.volume-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 12px 16px;
+  margin: 10px 0 4px;
+}
+
+.volume-banner .volume-text {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--text-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.volume-banner .volume-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* =========================================================
+   EXERCISE LIBRARY
+========================================================= */
+
+.exlib-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  margin: 8px 0 4px;
+}
+
+.exlib-section-note {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.exlib-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+.exlib-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.exlib-chip {
+  font-size: 0.85rem;
+  color: var(--text-hi);
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exlib-chip .exlib-num {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 0.78rem;
+}
+
+
+/* High-quality responsive exercise-library photo cards */
+.exlib-image-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: #0b1220;
+}
+.exlib-exercise-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
