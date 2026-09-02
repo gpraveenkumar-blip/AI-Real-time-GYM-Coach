@@ -4,7 +4,7 @@ streamlit-webrtc==0.64.5
 mediapipe==0.10.35
 opencv-python-headless
 numpy==1.26.4
-
+av
 pandas==2.2.3
 groq>=1.6.0
 gtts==2.5.3
