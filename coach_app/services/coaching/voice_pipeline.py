@@ -1,3 +1,9 @@
+"""Compatibility pipeline for LLM -> gTTS audio.
+
+For live coaching, prefer browser_voice.py because browser speech has much
+lower latency than generating MP3 audio over the network.
+"""
+
 import time
 import streamlit as st
 
@@ -6,9 +12,11 @@ class VoicePipeline:
     def __init__(self, llm, tts):
         self.llm = llm
         self.tts = tts
-        self.last_spoken_at = 0
+        self.last_spoken_at = 0.0
 
     def _find_form_issue(self, exercise, metrics):
+        metrics = metrics or {}
+
         if "issue" in metrics:
             return metrics["issue"]
 
@@ -47,7 +55,6 @@ class VoicePipeline:
 
         elif exercise == "Shoulder Press":
             back_arch = metrics.get("back_arch_status", "")
-            extension = metrics.get("extension_status", "")
 
             if back_arch == "Excessive Arch":
                 return "The user is arching their lower back excessively during the press."
@@ -65,14 +72,13 @@ class VoicePipeline:
 
     def process_event(self, event, exercise, metrics, language="English"):
         issue = self._find_form_issue(exercise, metrics)
+        now = time.monotonic()
 
-        now = time.time()
-
-        is_major_issue = event in [
+        is_major_issue = event in {
             "workout_started",
             "set_completed",
             "workout_completed",
-        ]
+        }
 
         if not is_major_issue:
             if not issue:
@@ -81,11 +87,25 @@ class VoicePipeline:
             if now - self.last_spoken_at < 5:
                 return None
 
-        text = self.llm.give_feedback(event, issue, language=language)
-        voice = self.tts.speak_in_language(text, language=language)
+        text = self.llm.give_feedback(
+            event=event,
+            issue=issue,
+            language=language,
+            context={
+                "exercise": exercise,
+                "form": issue or "unknown",
+            },
+        )
+
+        if not text:
+            return None
+
+        voice = self.tts.speak_in_language(
+            text,
+            language=language,
+        )
 
         self.last_spoken_at = now
-
         return voice, text
 
 
