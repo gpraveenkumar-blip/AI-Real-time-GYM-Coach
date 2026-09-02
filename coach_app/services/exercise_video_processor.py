@@ -1,4 +1,22 @@
 import os
+import sys
+import importlib.metadata
+
+print("Python:", sys.version)
+
+try:
+    print("opencv-python:", importlib.metadata.version("opencv-python"))
+except importlib.metadata.PackageNotFoundError:
+    print("opencv-python: NOT INSTALLED")
+
+try:
+    print(
+        "opencv-python-headless:",
+        importlib.metadata.version("opencv-python-headless")
+    )
+except importlib.metadata.PackageNotFoundError:
+    print("opencv-python-headless: NOT INSTALLED")
+
 import cv2
 import av
 import numpy as np
