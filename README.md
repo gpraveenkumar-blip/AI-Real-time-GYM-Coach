@@ -1060,3 +1060,43 @@ Built with:
 </a>
 
 </div>
+
+
+## Account Portal → Coach SSO
+
+The Coach now supports a short-lived, HMAC-signed handoff from the AI-GYM account portal.
+
+Configure the Coach server with:
+
+```env
+AI_GYM_SSO_SECRET=<long-random-server-secret>
+AI_GYM_ACCOUNT_PORTAL_URL=https://your-account-portal.example/login
+```
+
+The account portal backend must generate these query parameters server-side:
+
+```text
+coach_user_id
+coach_username
+coach_exp
+coach_sig
+```
+
+The signature is:
+
+```text
+HMAC-SHA256(
+  AI_GYM_SSO_SECRET,
+  f"{coach_user_id}:{coach_username}:{coach_exp}"
+)
+```
+
+`coach_exp` must be a Unix timestamp no more than five minutes in the future.
+The Coach rejects unsigned, expired, malformed, or tampered handoffs and clears
+the handoff parameters after successful authentication.
+
+**Never generate the signature in browser JavaScript and never expose
+`AI_GYM_SSO_SECRET` to the client.**
+
+For local-only development, `AI_GYM_DEMO_AUTH=1` can enable the demo account.
+Do not enable that setting in production.

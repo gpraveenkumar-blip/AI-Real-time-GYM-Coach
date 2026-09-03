@@ -43,7 +43,7 @@ def _load_exercise_image_data_uri(exercise_name: str):
     import base64
 
     slug = exercise_name.lower().replace(" ", "_").replace("/", "").replace("-", "_").replace("__", "_")
-    path = os.path.join(os.getcwd(), "static", "exercise_library", f"{slug}.webp")
+    path = os.path.join(os.path.dirname(__file__), "static", "exercise_library", f"{slug}.webp")
 
     try:
         with open(path, "rb") as f:
@@ -54,6 +54,8 @@ def _load_exercise_image_data_uri(exercise_name: str):
 
 
 def main():
+    # Load project configuration before authentication is evaluated.
+    load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"), override=False)
     st.set_page_config(
         page_icon="🏋️‍♀️",
         page_title="AI Real-time GYM Coach",
@@ -61,8 +63,8 @@ def main():
         layout="centered"
     )
 
-    load_css(os.path.join(os.getcwd(), "static", "style.css"))
-    inject_local_font(os.path.join(os.getcwd(), "static", "AdobeClean.otf"), "AdobeClean")
+    load_css(os.path.join(os.path.dirname(__file__), "static", "style.css"))
+    inject_local_font(os.path.join(os.path.dirname(__file__), "static", "AdobeClean.otf"), "AdobeClean")
 
     init_db()
     # Require a valid account session before opening the coach.
@@ -74,15 +76,21 @@ def main():
     if "voice_pipeline" not in st.session_state:
         try:
             load_dotenv()
-            api_key = os.environ.get("GROQ_API_KEY", "")
+            api_key = os.environ.get("GROQ_API_KEY", "").strip()
 
-            if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
-                api_key = st.secrets["GROQ_API_KEY"]
+            if not api_key and hasattr(st, "secrets"):
+                try:
+                    api_key = str(st.secrets.get("GROQ_API_KEY", "")).strip()
+                except Exception:
+                    api_key = ""
 
-            groq_client = Groq(api_key=api_key)
-            llm_coach = LLMCoach(groq_client)
-            tts = TextToSpeech()
-            st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
+            if not api_key:
+                st.session_state.voice_pipeline = None
+            else:
+                groq_client = Groq(api_key=api_key)
+                llm_coach = LLMCoach(groq_client)
+                tts = TextToSpeech()
+                st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
         except Exception:
             st.session_state.voice_pipeline = None
 
@@ -138,8 +146,8 @@ def main():
                 else LIBRARY_EXERCISE_OPTIONS[_muscle_group]
             )
             plan_exercise = st.selectbox("Exercise", options=_group_options, key="plan_exercise")
-            plan_sets = st.number_input("Sets", min_value=0, max_value=50, key="plan_sets", step=1)
-            plan_reps = st.number_input("Reps per Set", min_value=0, max_value=50, key="plan_reps", step=1)
+            plan_sets = st.number_input("Sets", min_value=1, max_value=20, key="plan_sets", step=1)
+            plan_reps = st.number_input("Reps per Set", min_value=1, max_value=100, key="plan_reps", step=1)
 
             if plan_exercise in HOLD_BASED_EXERCISES:
                 st.caption("⏱️ Hold-based exercise — 'Reps' here means seconds held.")
@@ -155,6 +163,11 @@ def main():
             start_session_button = st.button("Start Workout", width="stretch", key="start_session_button")
 
             if start_session_button:
+                # Validate UI values again at the action boundary.
+                if not (1 <= int(plan_sets) <= 20 and 1 <= int(plan_reps) <= 100):
+                    st.error("Choose at least 1 set and 1 rep, within the supported limits.")
+                    st.stop()
+
                 st.session_state.exercise_type = plan_exercise
                 st.session_state.target_sets = int(plan_sets)
                 st.session_state.reps_per_set = int(plan_reps)
